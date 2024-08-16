@@ -48,7 +48,7 @@ end)
         'You should replace the code that you are sent, only following the comments. Do not talk at all. Only output valid code. Do not provide any backticks that surround the code. Never ever output backticks like this ```. Any comment that is asking you for something should be removed after you satisfy them. Other comments should left alone. Do not output backticks'
         local helpful_prompt =
         'You are a helpful assistant. What I have sent are my notes so far. You are very curt, yet helpful.'
-        local dingllm = require 'llm'
+        local llm = require 'llm'
 
 
         local function handle_open_router_spec_data(data_stream)
@@ -57,7 +57,7 @@ end)
             if json.choices and json.choices[1] and json.choices[1].text then
               local content = json.choices[1].text
               if content then
-                dingllm.write_string_at_cursor(content)
+                llm.write_string_at_cursor(content)
               end
             end
           else
@@ -85,7 +85,7 @@ end)
 
 
         local function llama_405b_base()
-          dingllm.invoke_llm_and_stream_into_editor({
+          llm.invoke_llm_and_stream_into_editor({
             url = 'https://openrouter.ai/api/v1/chat/completions',
             model = 'meta-llama/llama-3.1-405b',
             api_key_name = 'OPEN_ROUTER_API_KEY',
@@ -95,84 +95,84 @@ end)
         end
 
         local function groq_replace()
-          dingllm.invoke_llm_and_stream_into_editor({
+          llm.invoke_llm_and_stream_into_editor({
             url = 'https://api.groq.com/openai/v1/chat/completions',
             model = 'llama-3.1-70b-versatile',
             api_key_name = 'GROQ_API_KEY',
             system_prompt = system_prompt,
             replace = true,
-          }, dingllm.make_openai_spec_curl_args, dingllm.handle_openai_spec_data)
+          }, llm.make_openai_spec_curl_args, llm.handle_openai_spec_data)
         end
 
         local function groq_help()
-          dingllm.invoke_llm_and_stream_into_editor({
+          llm.invoke_llm_and_stream_into_editor({
             url = 'https://api.groq.com/openai/v1/chat/completions',
             model = 'llama-3.1-70b-versatile',
             api_key_name = 'GROQ_API_KEY',
             system_prompt = helpful_prompt,
             replace = false,
-          }, dingllm.make_openai_spec_curl_args, dingllm.handle_openai_spec_data)
+          }, llm.make_openai_spec_curl_args, llm.handle_openai_spec_data)
         end
 
 
         local function ollama_replace()
-          dingllm.invoke_llm_and_stream_into_editor({
+          llm.invoke_llm_and_stream_into_editor({
             url = 'http://localhost:11434/v1/chat/completions',
             model = 'llama3.1',      -- or any other model you have in Ollama
             api_key_name = 'ollama', -- Ollama doesn't require an API key
             system_prompt = system_prompt,
             replace = true,
-          }, dingllm.make_openai_spec_curl_args, dingllm.handle_openai_spec_data)
+          }, llm.make_openai_spec_curl_args, llm.handle_openai_spec_data)
         end
 
         local function ollama_help()
-          dingllm.invoke_llm_and_stream_into_editor({
+          llm.invoke_llm_and_stream_into_editor({
             url = 'http://localhost:11434/v1/chat/completions',
             model = 'llama3.1',      -- or any other model you have in Ollama
             api_key_name = 'ollama', -- Ollama doesn't require an API key
             system_prompt = helpful_prompt,
             replace = false,
-          }, dingllm.make_openai_spec_curl_args, dingllm.handle_openai_spec_data)
+          }, llm.make_openai_spec_curl_args, llm.handle_openai_spec_data)
         end
 
         local function openai_replace()
-          dingllm.invoke_llm_and_stream_into_editor({
+          llm.invoke_llm_and_stream_into_editor({
             url = 'https://api.openai.com/v1/chat/completions',
             model = 'gpt-4o',
             api_key_name = 'OPENAI_API_KEY',
             system_prompt = system_prompt,
             replace = true,
-          }, dingllm.make_openai_spec_curl_args, dingllm.handle_openai_spec_data)
+          }, llm.make_openai_spec_curl_args, llm.handle_openai_spec_data)
         end
 
         local function openai_help()
-          dingllm.invoke_llm_and_stream_into_editor({
+          llm.invoke_llm_and_stream_into_editor({
             url = 'https://api.openai.com/v1/chat/completions',
             model = 'gpt-4o',
             api_key_name = 'OPENAI_API_KEY',
             system_prompt = helpful_prompt,
             replace = false,
-          }, dingllm.make_openai_spec_curl_args, dingllm.handle_openai_spec_data)
+          }, llm.make_openai_spec_curl_args, llm.handle_openai_spec_data)
         end
 
         local function anthropic_help()
-          dingllm.invoke_llm_and_stream_into_editor({
+          llm.invoke_llm_and_stream_into_editor({
             url = 'https://api.anthropic.com/v1/messages',
             model = 'claude-3-5-sonnet-20240620',
             api_key_name = 'ANTHROPIC_API_KEY',
             system_prompt = helpful_prompt,
             replace = false,
-          }, dingllm.make_anthropic_spec_curl_args, dingllm.handle_anthropic_spec_data)
+          }, llm.make_anthropic_spec_curl_args, llm.handle_anthropic_spec_data)
         end
 
         local function anthropic_replace()
-          dingllm.invoke_llm_and_stream_into_editor({
+          llm.invoke_llm_and_stream_into_editor({
             url = 'https://api.anthropic.com/v1/messages',
             model = 'claude-3-5-sonnet-20240620',
             api_key_name = 'ANTHROPIC_API_KEY',
             system_prompt = system_prompt,
             replace = true,
-          }, dingllm.make_anthropic_spec_curl_args, dingllm.handle_anthropic_spec_data)
+          }, llm.make_anthropic_spec_curl_args, llm.handle_anthropic_spec_data)
         end
 
         vim.keymap.set({ 'n', 'v' }, '<leader>k', groq_replace, { desc = 'llm groq' })
