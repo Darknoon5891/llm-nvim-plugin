@@ -1,6 +1,12 @@
 # llm-nvim-plugin
 Neovim LLM Plugin
 
+## Config Steps for LLM
+- Install Neovim (v0.8.0+)
+- Add below config that will be out of date.
+- Add API key env varibles in bash/whatever shell is being used with the respective name in the function call.
+- Profit
+
 ```lua
 vim.g.base46_cache = vim.fn.stdpath "data" .. "/nvchad/base46/"
 vim.g.mapleader = " "
